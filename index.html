@@ -556,6 +556,43 @@
       font-size: 14px;
     }
 
+    /*
+      10連召喚専用のコンパクト表示。
+      単発召喚は従来の大きさを維持する。
+    */
+    .result-grid.ten-results {
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .result-grid.ten-results .result-card {
+      min-width: 0;
+      padding: 9px;
+      border-radius: 10px;
+    }
+
+    .result-grid.ten-results .result-card img {
+      margin-bottom: 6px;
+      border-radius: 7px;
+    }
+
+    .result-grid.ten-results .result-number {
+      margin-bottom: 3px;
+      font-size: 10px;
+    }
+
+    .result-grid.ten-results .result-name {
+      margin-bottom: 3px;
+      font-size: 14px;
+      line-height: 1.25;
+      overflow-wrap: anywhere;
+    }
+
+    .result-grid.ten-results .result-rate {
+      font-size: 11px;
+      line-height: 1.25;
+    }
+
     .summary {
       text-align: center;
       font-weight: 700;
@@ -643,15 +680,45 @@
       .result-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
+
+      /* 10連はスマホでも3列表示にして縦スクロールを減らす */
+      .result-grid.ten-results {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 6px;
+      }
+
+      .result-grid.ten-results .result-card {
+        padding: 7px;
+      }
+
+      .result-grid.ten-results .result-name {
+        font-size: 12px;
+      }
+
+      .result-grid.ten-results .result-rate {
+        font-size: 10px;
+      }
     }
 
     @media (max-width: 410px) {
-      .result-grid {
+      /* 単発は従来どおり1列。10連だけ3列を維持する。 */
+      .result-grid:not(.ten-results) {
         grid-template-columns: 1fr;
+      }
+
+      .result-grid.ten-results {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
       }
 
       .rate-row {
         font-size: 13px;
+      }
+    }
+
+    /* 非常に幅の狭い端末だけは2列に落として可読性を確保 */
+    @media (max-width: 330px) {
+      .result-grid.ten-results {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
       }
     }
   </style>
@@ -1018,6 +1085,9 @@
       }
 
       resultGrid.innerHTML = "";
+
+      // 10連のときだけ、スマホでも複数列になるコンパクト表示を使用
+      resultGrid.classList.toggle("ten-results", results.length === 10);
 
       results.forEach((item, index) => {
         const card = document.createElement("div");
