@@ -600,6 +600,26 @@
       margin: 6px 0 0;
     }
 
+    /*
+      PCの単発召喚結果だけ横幅を制限。
+      スマホ表示と10連表示には影響しない。
+    */
+    @media (min-width: 641px) {
+      .result-grid:not(.ten-results) {
+        width: min(360px, 100%);
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .result-grid:not(.ten-results) .result-card {
+        padding: 12px;
+      }
+
+      .result-grid:not(.ten-results) .result-card img {
+        margin-bottom: 8px;
+      }
+    }
+
     .single-result-animate {
       animation: singleSummonReveal .48s ease-out;
     }
